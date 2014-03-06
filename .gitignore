@@ -1,0 +1,22 @@
+*~
+_*
+*.o
+*.d
+*.asm
+*.sym
+*.img
+vectors.S
+bootblock
+entryother
+initcode
+initcode.out
+kernel
+kernelmemfs
+mkfs
+.gdbinit
+
+# ignore pdfs in the folder
+*.pdf
+
+# also ignore cscope output
+cscope.out

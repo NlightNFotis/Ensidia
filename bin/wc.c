@@ -8,19 +8,19 @@ void
 wc(int fd, char *name)
 {
   int i, n;
-  int l, w, c, inword;
+  int lines, words, characters, inword;
 
-  l = w = c = 0;
+  lines = words = characters = 0;
   inword = 0;
   while((n = read(fd, buf, sizeof(buf))) > 0){
     for(i=0; i<n; i++){
-      c++;
+      characters++;
       if(buf[i] == '\n')
-        l++;
+        lines++;
       if(strchr(" \r\t\n\v", buf[i]))
         inword = 0;
       else if(!inword){
-        w++;
+        words++;
         inword = 1;
       }
     }
@@ -29,7 +29,12 @@ wc(int fd, char *name)
     printf(1, "wc: read error\n");
     exit();
   }
-  printf(1, "%d %d %d %s\n", l, w, c, name);
+
+  /* Report to the user. */
+  printf(1, "Reporting for file: %s\n", name);
+  printf(1, "  lines: %d\n", lines);
+  printf(1, "  words: %d\n", words);
+  printf(1, "  chars: %d\n", characters);
 }
 
 int

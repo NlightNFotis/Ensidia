@@ -6,6 +6,9 @@
 #include "../include/mmu.h"
 #include "../include/proc.h"
 
+// Defined in syscall.c
+extern int syscallnum;
+
 int
 sys_fork(void)
 {
@@ -87,4 +90,12 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+// return the number of system calls that have taken place in
+// the system
+int
+sys_numcalls(void)
+{
+    return syscallnum;
 }

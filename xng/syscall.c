@@ -13,6 +13,10 @@
 // library system call function. The saved user %esp points
 // to a saved program counter, and then the first argument.
 
+// The total number of system calls that have taken place in
+// the system.
+uint syscallnum = 0;
+
 // Fetch the int at addr from the current process.
 int
 fetchint(uint addr, int *ip)
@@ -98,6 +102,7 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
+extern int sys_numcalls(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -121,6 +126,7 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_numcalls] sys_numcalls
 };
 
 void
@@ -130,6 +136,7 @@ syscall(void)
 
   num = proc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+    syscallnum++; // increment the syscall counter
     proc->tf->eax = syscalls[num]();
   } else {
     cprintf("%d %s: unknown sys call %d\n",
